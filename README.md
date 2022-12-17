@@ -2,6 +2,9 @@
 
 Octan is an simple reverse shell manager
 
+![image](https://user-images.githubusercontent.com/114283067/208232874-86fe3a57-1126-4ea1-ae52-b828e0d5938c.png)
+
+
 # Installation
 
 Script:
