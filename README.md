@@ -35,10 +35,17 @@ show <>                 <nr> | display all incoming connections
 ```
 
 ## show
+
+![image](https://user-images.githubusercontent.com/114283067/208232988-f0b121b1-d749-4a87-b18c-228e655340c5.png)
+
+
 The Show command allows you to "sniff" all incoming
 connections you can then decide what client you want to connect to
 
 ## mkexploit
+
+![image](https://user-images.githubusercontent.com/114283067/208232945-1992dee5-a642-4e49-adb9-bb6ccd5c5f36.png)
+
 
 mkexploit requires 1 argument and will create an simple reverse shell based on the
 configured payload 
@@ -51,6 +58,9 @@ The file it will create will be called "exploit_.py"
 you can then configure that payload and obfuscate+compile it blabla bla.
 
 ## exploit
+
+![image](https://user-images.githubusercontent.com/114283067/208233005-a009a0bf-ba18-4e5c-9677-939e1d30b939.png)
+
 
 The exploit will run an tcp listener which will
 accept all clients by default, but if you add an argument
