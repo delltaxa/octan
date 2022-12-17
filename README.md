@@ -1,7 +1,6 @@
 # octan
 
-...
-
+Octan is an simple reverse shell manager
 
 # Installation
 
