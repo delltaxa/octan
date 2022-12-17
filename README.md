@@ -8,8 +8,7 @@
 Script:
 ```
 git clone https://github.com/delltaxa/octan
-cd octan
-chmod +x ./octan
+cd octan/
 ```
 
 # Usage
