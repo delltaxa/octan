@@ -286,7 +286,7 @@ class program:
 {Fore.MAGENTA}  |(@)(@)|     {Fore.BLUE}|  |  |   --| | | |     | | | | 
 {Fore.MAGENTA}  )  __  (     {Fore.BLUE}|_____|_____| |_| |__|__|_|___| 
 {Fore.MAGENTA} /,'))((`.\    
-{Fore.MAGENTA}(( ((  )) ))   {Fore.GREEN}[+]{Fore.RESET} Running Octan on {Fore.YELLOW}v1.0.01
+{Fore.MAGENTA}(( ((  )) ))   {Fore.GREEN}[+]{Fore.RESET} Running Octan on {Fore.YELLOW}v1.0.02
 {Fore.MAGENTA} `\ `)(' /'    {Fore.RESET}{Fore.BLUE}[*]{Fore.RESET} Starting [{Fore.GREEN}{payload}{Fore.RESET}]
 """
 
