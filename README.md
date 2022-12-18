@@ -1,4 +1,4 @@
-# octan
+# octan - v1.0.02
 
 Octan is an simple reverse shell manager
 
