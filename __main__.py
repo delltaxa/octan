@@ -1,3 +1,4 @@
+import os
 import sys
 import nclib
 import socket
@@ -11,10 +12,7 @@ conn = None
 
 class utils:
     def getspaces(strin, lenin):
-        result = strin
-        while result.__len__() < lenin:
-            result += " "
-        return result
+        return strin.ljust(lenin)
     
     def animate(sentence):
         print('\033[?25l', end='', flush=True)
@@ -42,15 +40,21 @@ class octan_shell:
         global conn
 
         conn_str = str(conn)
+        
         if conn == None:
-            conn_str = "/"
+            conn_str = "SHELL"
 
-        return f"{Fore.BLUE}({str(conn_str)}){Fore.RESET} OfC [{Fore.MAGENTA}{ADDR}{Fore.RESET}]{Fore.GREEN}* {Fore.YELLOW}>>{Fore.RESET} "
+        return f"{Fore.RED}┌[{Fore.BLUE}{str(conn_str)}{Fore.RED}]─[{Fore.BLUE}{ADDR}{Fore.RED}]\n└╼{Fore.GREEN}octan{Fore.YELLOW}${Fore.RESET}"
 
     def main():
         while True:
             try:
+                cmd_input = ""
                 cmd_input = input(octan_shell.grab_prompt())
+
+                if cmd_input.strip() == "":
+                    continue
+
                 cmd_split = cmd_input.split()
                 cmd = cmd_split[0]
 
@@ -68,7 +72,10 @@ class octan_shell:
                     global PORT
                     global SEP
 
-                    octan.listen(ADDR, PORT, SEP, TARGET)
+                    try:
+                        octan.listen(ADDR, PORT, SEP, TARGET)
+                    except KeyboardInterrupt:
+                        pass
                 elif cmd_clean == "mkexploit":
                     if cmd_split.__len__() >= 2:
                         octan.mkexploit(f"{cmd_split[1]}:{PORT}/{SEP}")
@@ -158,12 +165,14 @@ class octan:
             pass
 
     def help():
-        print(""" 
-COMMAND                      | HELP_TEXT
-----------------------------------
-exploit <TARGET>        <nr> | Run tcp/listener
-mkexploit <PUBLIC_ADDR> <r>  | Create simple reverse shell (exploit_.py)
-show <>                 <nr> | display all incoming connections
+        print(f""" 
+____________________________________________________________________________
+|          {Fore.GREEN}COMMAND{Fore.RESET}             |                {Fore.GREEN}HELP_TEXT{Fore.RESET}                  |
+|------------------------------|-------------------------------------------|
+| {Fore.GREEN}exploit   {Fore.YELLOW}<TARGET>      {Fore.BLUE}<nr>{Fore.RESET} | Run {Fore.BLUE}tcp/listener{Fore.RESET}                          |
+| {Fore.GREEN}mkexploit {Fore.YELLOW}<PUBLIC_ADDR> {Fore.RED}<r>{Fore.RESET}  | Create simple reverse shell ({Fore.BLUE}exploit_.py{Fore.RESET}) |
+| {Fore.GREEN}show      {Fore.YELLOW}<0>           {Fore.BLUE}<nr>{Fore.RESET} | display all incoming connections          |
+|______________________________|___________________________________________|
 
         """)
 
